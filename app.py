@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Permite solicitudes desde cualquier origen para pruebas
+CORS(app, resources={r"/*": {"origins": "https://mango-grass-0a63d880f.5.azurestaticapps.net"}})  # Permite solicitudes desde cualquier origen para pruebas
 
 # Simulación de base de datos
 USERS = {"admin": "password123", "user": "pass456"}
