@@ -1,18 +1,21 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Permite solicitudes desde cualquier origen para pruebas
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# Simulación de base de datos
+USERS = {"admin": "password123", "user": "pass456"}
 
-@app.route('/echo', methods=['POST'])
-def echo():
-    # Obtener el mensaje enviado por el cliente
+@app.route("/login", methods=["POST"])
+def login():
     data = request.json
-    user_message = data.get("message", "")
-    # Responder con el mismo mensaje
-    return jsonify({"response": f"Eco: {user_message}"})
+    username = data.get("username")
+    password = data.get("password")
 
-if __name__ == '__main__':
+    if username in USERS and USERS[username] == password:
+        return jsonify({"message": "Login exitoso", "status": "success"}), 200
+    return jsonify({"message": "Credenciales incorrectas", "status": "fail"}), 401
+
+if __name__ == "__main__":
     app.run(debug=True)
